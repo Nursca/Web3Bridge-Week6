@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Script} from "forge-std/Script.sol";
-import {Project} from "../src/Project.sol";
+import {PropertyManagement} from "../src/PropertyManagement.sol";
 
 contract CounterScript is Script {
     Counter public counter;
