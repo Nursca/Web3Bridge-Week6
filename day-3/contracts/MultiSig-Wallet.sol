@@ -5,11 +5,6 @@ pragma solidity ^0.8.28;
 // import "hardhat/console.sol";
 
 contract MultiSigWallet {
-    /**address owner
-     * address[] signers
-     * uint256 quorum
-     * uint256 
-     */
 
     event Deposit (address indexed sender, uint indexed amount);
     event Submit (uint indexed txId);
@@ -56,7 +51,7 @@ contract MultiSigWallet {
         require(_required > 0 && _required <= _owners.length, "Invalid no of owners");
         
     
-        for (uint i; i < owners.length; i++) {
+        for (uint i; i < _owners.length; i++) {
             address owner = _owners[i];
 
             require(owner != address(0), "address zero can't be owner");
@@ -66,7 +61,7 @@ contract MultiSigWallet {
             owners.push(owner);
             
         }
-        _required = required;
+        required = _required;
     }
 
     receive() external payable {
@@ -74,6 +69,7 @@ contract MultiSigWallet {
     }
 
     function submit(address _to, uint _value, bytes calldata _data) external onlyOwner {
+        require(_value > 0, "Invaild value");
         transactions.push(Transaction({
             to: _to,
             value: _value,
