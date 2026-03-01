@@ -10,10 +10,11 @@ const main = async () => {
     await helpers.impersonateAccount(TokenHolder);
     const impersonatedSigner = await ethers.getSigner(TokenHolder);
 
-    const amountOut = ethers.parseUnits("1000", 6);
-    const path = [WETHAddress, USDCAddress];
+    const amountOut = ethers.parseEther("0.1");
+    const amountInMax = ethers.parseUnits("1000", 6);
+    const path = [USDCAddress, WETHAddress];
     const deadline = Math.floor(Date.now()/ 1000) + 60 * 10;
-    
+
     const USDC = await ethers.getContractAt(
         "IERC20",
         USDCAddress,
@@ -25,48 +26,37 @@ const main = async () => {
         impersonatedSigner,
     );
 
-    const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
     const wethBalBefore = await ethers.provider.getBalance(impersonatedSigner.address);
+    const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
 
     console.log ("============Before============");
 
-    console.log("USDC Balance before swap:", Number(usdcBalBefore));
     console.log("WETH Balance before swap:", Number(wethBalBefore));
+    console.log("USDC Balance before swap:", Number(usdcBalBefore));
 
-    const tx = await ROUTER.swapETHForExactTokens(
+    const tx = await ROUTER.swapTokensForExactETH(
         amountOut,
+        amountInMax,
         path,
         impersonatedSigner.address,
         deadline,
-        {
-            value: ethers.parseEther("0.5"),
-        }
     );
 
     await tx.wait();
 
-    const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
     const wethBalAfter = await ethers.provider.getBalance(impersonatedSigner.address);
+    const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
 
-    console.log(
-        "=================After========================================",
-    );
+    console.log ("============After============");
 
-    console.log("USDC Balance after swap:", Number(usdcBalAfter));
     console.log("WETH Balance after swap:", Number(wethBalAfter));
+    console.log("USDC Balance after swap:", Number(usdcBalAfter));
 
-    console.log("=================Difference==============================");
+    console.log ("============Difference============");
 
+    const newWethValue = (wethBalAfter) - (wethBalBefore);
     const newUsdcValue = Number(usdcBalAfter) - Number(usdcBalBefore);
-    const newWethValue = (wethBalBefore) - (wethBalAfter);
 
     console.log("NEW USDC BALANCE:", ethers.formatUnits(newUsdcValue, 6));
     console.log("NEW WETH BALANCE:", ethers.formatEther(newWethValue));
-
-    
 }
-
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-});
