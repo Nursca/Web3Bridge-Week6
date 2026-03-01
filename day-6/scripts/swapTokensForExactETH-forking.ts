@@ -26,13 +26,15 @@ const main = async () => {
         impersonatedSigner,
     );
 
+    await USDC.approve(UNIRouter, amountInMax);
+
     const wethBalBefore = await ethers.provider.getBalance(impersonatedSigner.address);
     const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
 
     console.log ("============Before============");
 
-    console.log("WETH Balance before swap:", Number(wethBalBefore));
-    console.log("USDC Balance before swap:", Number(usdcBalBefore));
+    console.log("WETH Balance before swap:", ethers.formatEther(wethBalBefore));
+    console.log("USDC Balance before swap:", ethers.formatUnits(usdcBalBefore, 6));
 
     const tx = await ROUTER.swapTokensForExactETH(
         amountOut,
@@ -49,14 +51,19 @@ const main = async () => {
 
     console.log ("============After============");
 
-    console.log("WETH Balance after swap:", Number(wethBalAfter));
-    console.log("USDC Balance after swap:", Number(usdcBalAfter));
+    console.log("WETH Balance after swap:", ethers.formatEther(wethBalAfter));
+    console.log("USDC Balance after swap:", ethers.formatUnits(usdcBalAfter, 6));
 
     console.log ("============Difference============");
 
     const newWethValue = (wethBalAfter) - (wethBalBefore);
-    const newUsdcValue = Number(usdcBalAfter) - Number(usdcBalBefore);
+    const newUsdcValue = Number(usdcBalBefore) - Number(usdcBalAfter);
 
     console.log("NEW USDC BALANCE:", ethers.formatUnits(newUsdcValue, 6));
     console.log("NEW WETH BALANCE:", ethers.formatEther(newWethValue));
 }
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
