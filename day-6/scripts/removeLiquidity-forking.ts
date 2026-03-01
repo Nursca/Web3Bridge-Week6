@@ -95,6 +95,9 @@ const main = async () => {
     console.log("USDC Balance:", ethers.formatUnits(usdcBalAfter, 6));
     console.log("DAI Balance:", ethers.formatUnits(daiBalAfter, 18));
 
+    const liquidityBalanceAfter = await pair.balanceOf(impersonatedSigner.address);
+    console.log("LP Token Balance after removing liquidity:", ethers.formatUnits(liquidityBalanceAfter, 18));
+
     const usdcUsed = usdcBalBefore - usdcBalAfter;
     const daiUsed = daiBalBefore - daiBalAfter;
 
