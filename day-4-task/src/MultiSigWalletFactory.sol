@@ -4,6 +4,7 @@ pragma solidity ^0.8.28;
 import {MultiSigWallet} from "./MultiSig-Wallet.sol";
 
 contract MultiSigWalletFactory {
+
     event WalletCreated(address indexed walletAddress, address[] owners, uint required);
 
     address[] public deployedWallets;
@@ -22,15 +23,15 @@ contract MultiSigWalletFactory {
         return address(wallet);
     }
 
-    function getDeployedWallets() external view returns (address[] memory) {
-        return deployedWallets;
-    }
+    // function getDeployedWallets() external view returns (address[] memory) {
+    //     return deployedWallets;
+    // }
 
-    function getWalletCount() external view returns (uint) {
-        return deployedWallets.length;
-    }
+    // function getWalletCount() external view returns (uint) {
+    //     return deployedWallets.length;
+    // }
 
-    function isDeployedWallet(address _wallet) external view returns (bool) {
-        return isWallet[_wallet];
-    }
+    // function isDeployedWallet(address _wallet) external view returns (bool) {
+    //     return isWallet[_wallet];
+    // }
 }
