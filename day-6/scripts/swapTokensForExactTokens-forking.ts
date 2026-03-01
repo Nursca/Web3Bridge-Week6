@@ -63,7 +63,7 @@ const main = async () => {
 
     console.log("============Difference============");
 
-    const newUsdcValue = Number(usdcBalAfter) - Number(usdcBalBefore);
+    const newUsdcValue = Number(usdcBalBefore) - Number(usdcBalAfter);
     const newDaiValue = Number(daiBalAfter) - Number(daiBalBefore);
 
     console.log("USDC Difference:", newUsdcValue);

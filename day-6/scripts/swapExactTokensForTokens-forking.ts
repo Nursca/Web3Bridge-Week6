@@ -58,11 +58,11 @@ const main = async () => {
 
     console.log("============After============");
 
-    console.log("USDC Balance after swap:", Number(usdcBalAfter));
-    console.log("DAI Balance after swap:", Number(daiBalAfter));
+    console.log("USDC Balance after swap:", usdcBalAfter);
+    console.log("DAI Balance after swap:", daiBalAfter);
 
     console.log("============Difference============");
-    const newUsdcValue = Number(usdcBalAfter) - Number(usdcBalBefore);
+    const newUsdcValue = Number(usdcBalBefore) - Number(usdcBalAfter);
     const newDaiValue = Number(daiBalAfter) - Number(daiBalBefore);
 
     console.log("USDC Difference:", newUsdcValue);

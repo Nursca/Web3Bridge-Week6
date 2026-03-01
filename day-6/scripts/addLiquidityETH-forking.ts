@@ -29,10 +29,12 @@ const main = async () => {
     await USDC.approve(UNIRouter, amountUSDC);
 
     const usdcBalBefore = await USDC.balanceOf(impersonatedSigner.address);
+    const wethBalBefore = await ethers.provider.getBalance(impersonatedSigner.address);
     
     console.log("==========Before==========");
 
-    console.log("USDC Balance before adding liquidity:", Number(usdcBalBefore));
+    console.log("USDC Balance before adding liquidity:", ethers.formatUnits(usdcBalBefore, 6));
+    console.log("WETH Balance before adding liquidity:", ethers.formatEther(wethBalBefore));
     
     const tx = await ROUTER.addLiquidityETH(
         USDCAddress,
@@ -47,9 +49,12 @@ const main = async () => {
     await tx.wait();
 
     const usdcBalAfter = await USDC.balanceOf(impersonatedSigner.address);
+    const wethBalAfter = await ethers.provider.getBalance(impersonatedSigner.address);
+
     console.log("==========After==========");
     
-    console.log("USDC Balance after adding liquidity:", Number(usdcBalAfter));
+    console.log("USDC Balance after adding liquidity:", ethers.formatUnits(usdcBalAfter, 6));
+    console.log("WETH Balance after adding liquidity:", ethers.formatEther(wethBalAfter));
 
     console.log("Liquidity added successfully!");
 
